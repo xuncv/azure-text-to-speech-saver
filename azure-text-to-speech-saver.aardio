@@ -14,7 +14,7 @@ wb.external = {
 		if(string.indexOf(data,"start")){
 			buf = ''
 		}elseif(string.indexOf(data,"end")){
-			string.save("\1.mp3",buf )
+			string.save("D:\1.mp3",buf )
 			winform.msgbox("下载完成")
 			buf = ''
 		}else {

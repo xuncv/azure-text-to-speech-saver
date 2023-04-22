@@ -1,0 +1,56 @@
+import console; 
+import string.template
+import web.rest.client
+web.rest.jsonClient
+var ssmlTemp = string.template()
+
+ssmlTemp.template = /***
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
+        <voice name="zh-CN-YunxiNeural">
+            <mstts:express-as   >
+                <prosody rate="10.000000000000009%" pitch="0%">
+					${text}
+                </prosody>
+            </mstts:express-as>
+        </voice>
+    </speak>
+***/
+
+var ssml = ssmlTemp.format(
+	text = "aardio 在诞生之初就设计了良好的架构与语法。正因如此，aardio 历经17年发展，日新月异，每一年都会带来大量的更新扩展，但仍然能保持最初简洁高效的结构与语法，即使是最早的 aardio 源代码仍然能不经修改在最新版本开发环境中完美运行。";
+)
+
+client = web.rest.client()
+client.addHeaders = {
+      authority: "southeastasia.api.speech.microsoft.com",
+      accept: "*/*",
+      "accept-language": "zh-CN,zh;q=0.9",
+      customvoiceconnectionid: "d8a3a480-dd87-11ed-8758-97b5a7fbfaf6",
+      origin: "https://speech.microsoft.com",
+      "sec-ch-ua":
+        '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": '"Windows"',
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+      "content-type": "application/json",
+}
+
+api = client.api("https://southeastasia.api.speech.microsoft.com/accfreetrial/texttospeech/acc/v3.0-beta1")
+console.log("语音合成中")
+var res,e,c = api.vcg.speak.post(web.json.stringify(
+{
+    ssml = ssml;
+    ttsAudioFormat =  "audio-24khz-160kbitrate-mono-mp3";
+    offsetInPlainText = 0;
+    properties =  {
+    	SpeakTriggerSource =  "AccTuningPagePlayButton";
+    };	
+}))
+
+if(res){
+	string.save("D:\test.mp3",res )	
+}
+console.pause()
