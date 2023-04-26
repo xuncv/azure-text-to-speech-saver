@@ -1,7 +1,6 @@
 import console; 
 import string.template
 import web.rest.client
-web.rest.jsonClient
 var ssmlTemp = string.template()
 
 ssmlTemp.template = /***
@@ -51,6 +50,8 @@ var res,e,c = api.vcg.speak.post(web.json.stringify(
 }))
 
 if(res){
-	string.save("D:\test.mp3",res )	
+	import fsys.media
+	string.save("D:\test.mp3",res )
+	fsys.media("D:\test.mp3").play()
 }
 console.pause()
